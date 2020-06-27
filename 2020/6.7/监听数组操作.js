@@ -13,68 +13,62 @@
 //   'reverse'
 // 都进行了一次包装，使得我们在执行数组操作的时候会触发视图的渲染
 // 如果用Proxy可以这么实现
-const data = { arr: [] }
-const apis = [
+let data = { arr: [] };
+let apis = [
 	'push',
 	'pop',
 	'shift',
 	'unshift',
 	'splice',
 	'sort',
-	'reverse'
-]
-Object.keys(data).forEach(key => {
+	'reverse',
+];
+Object.keys(data).forEach((key) => {
 	if (Array.isArray(data[key])) {
 		data[key] = new Proxy(data[key], {
 			get(target, prop) {
 				if (apis.includes(prop)) {
 					return function (...rest) {
-						console.log(target,prop)
+						console.log(target, prop);
 						target[prop](...rest);
-						console.log('render')// 触发渲染
-					}
-
-				}else{
-					return target[prop]
+						console.log('render');// 触发渲染
+					};
 				}
-
-			}
-		})
+				return target[prop];
+			},
+		});
 	}
-})
-data.arr.push(1)
+});
+data.arr.push(1);
 
-data.arr.push(2)
-console.log(data.arr)
+data.arr.push(2);
+console.log(data.arr);
 // 以上就可以实现了，但是数据的类型会由Array变为Proxy
 
 // 使用Object.defineProperty来实现试试
-const data = { arr: [] }
-const apis = [
+data = { arr: [] };
+apis = [
 	'push',
 	'pop',
 	'shift',
 	'unshift',
 	'splice',
 	'sort',
-	'reverse'
-]
-Object.keys(data).forEach(key => {
+	'reverse',
+];
+Object.keys(data).forEach((key) => {
 	if (Array.isArray(data[key])) {
-		Object.defineProperty(data[key],'push',{
-			get(){
+		Object.defineProperty(data[key], 'push', {
+			get() {
 				return function (...rest) {
-					console.log(target,prop)
-					target[prop](...rest);
-					console.log('render')// 触发渲染
-				}
-			}
-		})
-	
+					this.push(...rest);
+					console.log('render');// 触发渲染
+				};
+			},
+		});
 	}
-})
-data.arr.push(1)
+});
+data.arr.push(1);
 
-data.arr.push(2)
-console.log(data.arr)
-
+data.arr.push(2);
+console.log(data.arr);

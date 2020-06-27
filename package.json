@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/luen-x/daily-learing/issues"
   },
-  "homepage": "https://github.com/luen-x/daily-learing#readme"
+  "homepage": "https://github.com/luen-x/daily-learing#readme",
+  "devDependencies": {
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-vue": "^6.2.2"
+  }
 }
